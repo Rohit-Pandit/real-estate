@@ -1,8 +1,16 @@
-import React from "react";
+import React,{useState} from "react";
 import { Link } from "react-router-dom";
 import { FiUsers, FiHome, FiFileText, FiDownload, FiLogOut } from "react-icons/fi";
+import Lead from "../pages/Leads.jsx";
+import DashboardView from "./DashboardView.jsx";
+import Agents from "../pages/Agents.jsx";
 
 export default function Dashboard() {
+
+  const [leadsView, setLeadsView] = useState(false);
+  const [dashboardView, setDashboardView] = useState(true);
+  const [agentsView, setAgentsView] = useState(false);
+
   return (
     <div className="flex min-h-screen bg-[#FFF7EC]">
 
@@ -12,25 +20,37 @@ export default function Dashboard() {
 
         <ul className="space-y-4 text-lg">
           <li>
-            <Link className="flex items-center gap-3 hover:text-[#F4A300]" to="/admin/dashboard">
-              <FiHome /> Dashboard
-            </Link>
+            <button className="flex items-center gap-3 hover:text-[#F4A300]" onClick={() => {
+              setDashboardView(true);
+              setLeadsView(false);
+              setAgentsView(false);
+            }}>
+              <FiFileText /> Dashboard View
+            </button>
           </li>
-
+          
           <li>
-            <Link className="flex items-center gap-3 hover:text-[#F4A300]" to="/admin/leads">
+            <button className="flex items-center gap-3 hover:text-[#F4A300]" onClick={() => {
+              setDashboardView(false);
+              setLeadsView(true);
+              setAgentsView(false);
+            }}>
               <FiFileText /> Leads
-            </Link>
+            </button>
           </li>
 
           <li>
-            <Link className="flex items-center gap-3 hover:text-[#F4A300]" to="/admin/agents">
+            <button className="flex items-center gap-3 hover:text-[#F4A300]" onClick={()=>{
+              setDashboardView(false);
+              setLeadsView(false);
+              setAgentsView(true);
+            }}>
               <FiUsers /> Agents
-            </Link>
+            </button>
           </li>
 
           <li>
-            <Link className="flex items-center gap-3 hover:text-[#F4A300]" to="/admin/export">
+            <Link className="flex items-center gap-3 hover:text-[#F4A300]" to="/">
               <FiDownload /> Export Leads
             </Link>
           </li>
@@ -45,27 +65,9 @@ export default function Dashboard() {
       {/* MAIN CONTENT */}
       <div className="flex-1 p-8">
 
-        <h1 className="text-3xl font-bold text-[#8A4B00] mb-8">Dashboard Overview</h1>
-
-        {/* Quick Stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-
-          <div className="bg-white rounded-xl p-6 shadow border-l-4 border-[#F4A300]">
-            <h3 className="text-xl font-semibold text-gray-700">Total Leads</h3>
-            <p className="text-3xl font-bold text-[#8A4B00]">0</p>
-          </div>
-
-          <div className="bg-white rounded-xl p-6 shadow border-l-4 border-[#8A4B00]">
-            <h3 className="text-xl font-semibold text-gray-700">Total Agents</h3>
-            <p className="text-3xl font-bold text-[#8A4B00]">0</p>
-          </div>
-
-          <div className="bg-white rounded-xl p-6 shadow border-l-4 border-[#D97706]">
-            <h3 className="text-xl font-semibold text-gray-700">Leads Today</h3>
-            <p className="text-3xl font-bold text-[#8A4B00]">0</p>
-          </div>
-
-        </div>
+        {dashboardView && !leadsView && !agentsView && <DashboardView />}
+        {!dashboardView && leadsView && !agentsView && <Lead />}
+        {!dashboardView && !leadsView && agentsView && <Agents/>}
 
       </div>
     </div>

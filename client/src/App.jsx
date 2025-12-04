@@ -6,6 +6,9 @@ import Footer from './components/Footer.jsx';
 import About from './pages/About.jsx';
 import Contact from './pages/Contact.jsx';
 import Dashboard from './pages/Dashboard.jsx';
+import Lead from './pages/Leads.jsx';
+import Agents from './pages/Agents.jsx';
+
 
 function App() {
   
@@ -19,6 +22,7 @@ function App() {
         <Route path='/about' element={<About />} />
         <Route path='/contact' element={<Contact />} />
         <Route path='/dashboard' element={<Dashboard />} />
+        
       </Routes>
       <Footer />
     </BrowserRouter>
