@@ -1,65 +1,62 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Contact = () => {
-
-   const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const [agents, setAgents] = useState([]);
 
   const initialFormState = {
-  name: "",
-  phone: "",
-  email: "",
-  message: "",
-  address: "",
-  agent: "",
-  interested: "Yes",
- };
+    name: "",
+    phone: "",
+    email: "",
+    message: "",
+    address: "",
+    agent: "",
+    interested: "Yes",
+  };
 
-  const [formData, setFormData] = useState({...initialFormState});
-
+  const [formData, setFormData] = useState({ ...initialFormState });
 
   const submitTestLead = async (e) => {
-     e.preventDefault();
+    e.preventDefault();
     try {
-    const res = await axios.post(
-      `${backendUrl}/api/v1/leads/create-lead`,
-      formData,
-      { withCredentials: true }
-    );
 
-    setFormData(initialFormState);
-    toast.success("Lead submitted successfully!");
+      const res = await axios.post(
+        `${backendUrl}/api/v1/leads/create-lead`,
+        formData,
+        { withCredentials: true }
+      );
 
-  } catch (error) {
-    toast.error(error.response?.data || error.message);
-  }
+      setFormData(initialFormState);
+      toast.success("Lead submitted successfully!");
+    } catch (error) {
+      toast.error(error.response?.data || error.message);
+    }
+  };
 
-  }
-
-   useEffect(() => {
+  useEffect(() => {
     const fetchAgents = async () => {
       try {
-        const res = await axios.get(`${backendUrl}/api/v1/agents/get-all-agents`);
-        console.log(res.data.agents);
+        const res = await axios.get(
+          `${backendUrl}/api/v1/agents/get-all-agents`
+        );
+        
         setAgents(res.data.agents); // assuming backend returns {agents:[...]}
       } catch (error) {
         console.error("Failed to load agents", error);
       }
     };
 
-  submitTestLead();
-
     fetchAgents();
   }, []);
 
   const handleChange = (e) => {
-    setFormData({ 
-      ...formData, 
-      [e.target.name]: e.target.value 
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -72,20 +69,16 @@ const Contact = () => {
 
   return (
     <div className="bg-[#FFF5E1] min-h-screen pt-16 pb-20 px-4">
-
       {/* Title */}
       <div className="text-center mb-10">
         <h1 className="text-3xl sm:text-4xl font-bold text-[#F4A300]">
           Contact Us
         </h1>
-        <p className="text-[#5A3E1B] mt-3">
-          We would love to hear from you!
-        </p>
+        <p className="text-[#5A3E1B] mt-3">We would love to hear from you!</p>
       </div>
 
       {/* Container */}
       <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
-
         {/* Left Info */}
         <div className="bg-[#FFE9C6] border border-[#F4A300] rounded-xl p-6 shadow-md">
           <h2 className="text-2xl font-semibold text-[#B5651D] mb-4">
@@ -93,8 +86,8 @@ const Contact = () => {
           </h2>
 
           <p className="text-[#5A3E1B] mb-4">
-            Have questions about a property? Want a site visit?  
-            Send us a message and our team will reach out soon.
+            Have questions about a property? Want a site visit? Send us a
+            message and our team will reach out soon.
           </p>
 
           <div className="mt-6 space-y-3 text-[#5A3E1B]">
@@ -110,8 +103,7 @@ const Contact = () => {
           onSubmit={handleSubmit}
           className="bg-white border border-[#F4A300] rounded-xl p-6 shadow-md"
         >
-
-           <div className="mb-4">
+          <div className="mb-4">
             <label className="text-[#B5651D] font-medium">Select Agent</label>
 
             <select
@@ -125,7 +117,7 @@ const Contact = () => {
 
               {agents.map((agent) => (
                 <option key={agent._id} value={agent._id}>
-                  {agent.name} ({agent.phone})
+                  {agent.name} 
                 </option>
               ))}
             </select>
@@ -141,7 +133,6 @@ const Contact = () => {
               value={formData.name}
               onChange={handleChange}
               className="mt-2 w-full p-3 rounded-lg border border-[#F4A300] focus:outline-none focus:ring-2 focus:ring-[#F4A300] bg-[#FFF9EF] text-[#5A3E1B]"
-              
             />
           </div>
 
@@ -155,11 +146,10 @@ const Contact = () => {
               value={formData.phone}
               onChange={handleChange}
               className="mt-2 w-full p-3 rounded-lg border border-[#F4A300] focus:outline-none focus:ring-2 focus:ring-[#F4A300] bg-[#FFF9EF] text-[#5A3E1B]"
-              
             />
           </div>
 
-           <div className="mb-4">
+          <div className="mb-4">
             <label className="text-[#B5651D] font-medium">Interested?</label>
 
             <select
@@ -171,7 +161,6 @@ const Contact = () => {
             >
               <option value="Yes">Yes</option>
               <option value="No">No</option>
-
             </select>
           </div>
 
@@ -219,7 +208,6 @@ const Contact = () => {
             Submit
           </button>
         </form>
-
       </div>
     </div>
   );

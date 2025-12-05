@@ -8,7 +8,7 @@ const createLead=async(req,res)=>{
 
     try{
 
-        const {name,email,phone,address,message,interested}=req.body;
+        const {name,email,phone,address,message,agent,interested}=req.body;
 
         if(!name || !phone){
             return res.status(400).json({message:"Name and Phone are required"});
@@ -20,6 +20,7 @@ const createLead=async(req,res)=>{
             phone,
             address,
             message,
+            agent,
             interested
         });
 
@@ -50,7 +51,10 @@ const createLead=async(req,res)=>{
 const getAllLeads=async(req,res)=>{
 
     try {
-        const leads = await Lead.find().sort({createdAt:-1});
+       const leads = await Lead.find()
+                               .sort({ createdAt: -1 })
+                               .populate("agent", "name phone");
+
 
         if(!leads){
             return res.status(404).json({
