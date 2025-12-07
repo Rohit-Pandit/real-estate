@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FiDownload } from "react-icons/fi";
 
-export default function LeadsPage() {
+export default function Leads() {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const [leads, setLeads] = useState([]);
@@ -144,7 +144,7 @@ export default function LeadsPage() {
   }
 
   return (
-    <div className="p-8 text-[#8A4B00]">
+    <div className="p-4 sm:p-6 md:p-8 text-[#8A4B00] space-y-4">
       <h1 className="text-3xl font-bold mb-6">All Leads</h1>
 
       <div

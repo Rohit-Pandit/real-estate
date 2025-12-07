@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { properties } from '../assets/dummyData.js';
-import Homecontact from './Homecontact.jsx';
 import Contact from './Contact.jsx';
 
 export default function Home() {

@@ -105,7 +105,7 @@ export default function Agents() {
     <div className="p-6 text-[#8A4B00] flex flex-col min-h-screen flex-direction row">
       <h1 className="text-3xl font-bold mb-6">Agent Management</h1>
 
-      <div className="flex gap-6 items-start">
+      <div className="flex flex-col lg:flex-row gap-6 items-start w-full">
         {/* Add / Edit Form */}
         <form
           onSubmit={editingAgent ? updateAgent : addAgent}

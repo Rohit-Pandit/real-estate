@@ -4,12 +4,15 @@ import { FiUsers, FiHome, FiFileText, FiDownload, FiLogOut } from "react-icons/f
 import Lead from "../pages/Leads.jsx";
 import DashboardView from "./DashboardView.jsx";
 import Agents from "../pages/Agents.jsx";
+import Token from "./Token.jsx";
+
 
 export default function Dashboard() {
 
   const [leadsView, setLeadsView] = useState(false);
   const [dashboardView, setDashboardView] = useState(true);
   const [agentsView, setAgentsView] = useState(false);
+  const [tokenView, setTokenView] = useState(false);
 
   return (
     <div className="flex min-h-screen bg-[#FFF7EC]">
@@ -50,9 +53,14 @@ export default function Dashboard() {
           </li>
 
           <li>
-            <Link className="flex items-center gap-3 hover:text-[#F4A300]" to="/">
-              <FiDownload /> Export Leads
-            </Link>
+            <button className="flex items-center gap-3 hover:text-[#F4A300]" onClick={()=>{
+              setDashboardView(false);
+              setLeadsView(false);
+              setAgentsView(false);
+              tokenView(true);
+              }}>
+              <FiDownload /> Print Token
+            </button>
           </li>
         </ul>
 
@@ -68,6 +76,7 @@ export default function Dashboard() {
         {dashboardView && !leadsView && !agentsView && <DashboardView />}
         {!dashboardView && leadsView && !agentsView && <Lead />}
         {!dashboardView && !leadsView && agentsView && <Agents/>}
+        {!dashboardView && !leadsView && !agentsView && <Token/>}
 
       </div>
     </div>
