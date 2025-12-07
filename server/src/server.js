@@ -19,10 +19,14 @@ app.use(express.json());
 app.use(urlencoded({extended:true}));
 app.use(cookieParser());
 
+const allowedOrigins = [
+  "https://real-estate-six-mu.vercel.app",
+  "https://www.real-estate-six-mu.vercel.app"
+];
 
 
 app.use(cors({
-    origin: base_URL,
+    origin: allowedOrigins,
     methods: ['GET','POST','PUT','DELETE'],
     allowedHeaders : ['Content-Type', 'Authorization'],
     credentials : true
