@@ -35,7 +35,7 @@ app.get( '/', (req, res) => {
 connectDB();
 
 
-import leadRoutes from './routes/Lead.route.js';
+import leadRoutes from './routes/lead.route.js';
 import healthcheckRoutes from './routes/healthcheck.route.js';
 import authRoutes from './routes/auth.route.js';
 import agentRoutes from './routes/agent.route.js';
