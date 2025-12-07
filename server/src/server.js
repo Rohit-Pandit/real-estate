@@ -14,7 +14,7 @@ dotenv.config();
 
 const app = express()
 const PORT = Number(process.env.PORT) || 4000;
-const base_URL =  `${process.env.BASE_URL}:${PORT}`;
+const base_URL =  process.env.BASE_URL || `http://localhost:5173`;
 app.use(express.json());
 app.use(urlencoded({extended:true}));
 app.use(cookieParser());
@@ -22,7 +22,7 @@ app.use(cookieParser());
 
 
 app.use(cors({
-    origin: `http://localhost:5173`,
+    origin: base_URL,
     methods: ['GET','POST','PUT','DELETE'],
     allowedHeaders : ['Content-Type', 'Authorization'],
     credentials : true
