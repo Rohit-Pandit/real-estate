@@ -6,8 +6,8 @@ export default function Leads() {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const [leads, setLeads] = useState([]);
+  const [originalLeads, setOriginalLeads] = useState([]);
   const [agents, setAgents] = useState([]);
-
   const [loading, setLoading] = useState(true);
 
   // Filters
@@ -15,45 +15,39 @@ export default function Leads() {
   const [filteredAgents, setFilteredAgents] = useState([]);
   const [filterAgent, setFilterAgent] = useState("");
   const [filterDays, setFilterDays] = useState("");
+  const [filterDate, setFilterDate] = useState("");
 
   // ------------------------------------------
   // PRINT HANDLER
-
+  // ------------------------------------------
   const handlePrint = () => {
     const printContent = document.getElementById("leads-table");
     const printWindow = window.open("", "", "width=900,height=700");
 
     printWindow.document.write(`
-    <html>
-      <head>
-        <title>Leads Report</title>
-        <style>
-          table {
-            width: 100%;
-            border-collapse: collapse;
-          }
-          th, td {
-            padding: 8px;
-            border: 1px solid #ccc;
-            text-align: left;
-            font-size: 14px;
-          }
-          th {
-            background: #8A4B00;
-            color: white;
-          }
-        </style>
-      </head>
-      <body>
-        ${printContent.outerHTML}
-      </body>
-    </html>
-  `);
+      <html>
+        <head>
+          <title>Leads Report</title>
+          <style>
+            table { width: 100%; border-collapse: collapse; }
+            th, td {
+              padding: 8px;
+              border: 1px solid #ccc;
+              text-align: left;
+              font-size: 14px;
+            }
+            th { background: #8A4B00; color: white; }
+          </style>
+        </head>
+        <body>
+          ${printContent.outerHTML}
+        </body>
+      </html>
+    `);
 
     printWindow.document.close();
     printWindow.focus();
     printWindow.print();
-    printWindow.close();
   };
 
   // ------------------------------------------
@@ -64,8 +58,8 @@ export default function Leads() {
       const res = await axios.get(`${backendUrl}/api/v1/leads/get-all-leads`, {
         withCredentials: true,
       });
-
       setLeads(res.data.leads || []);
+      setOriginalLeads(res.data.leads || []);
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -79,7 +73,6 @@ export default function Leads() {
   const fetchAgents = async () => {
     try {
       const res = await axios.get(`${backendUrl}/api/v1/agents/get-all-agents`);
-
       setAgents(res.data.agents || []);
     } catch (error) {
       console.log(error);
@@ -93,7 +86,7 @@ export default function Leads() {
   }, []);
 
   // ------------------------------------------
-  // DEBOUNCE SEARCH FOR AGENT DROPDOWN
+  // DEBOUNCE SEARCH FOR AGENTS
   // ------------------------------------------
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -115,29 +108,37 @@ export default function Leads() {
   // ------------------------------------------
   // FILTER LEADS
   // ------------------------------------------
-  const filteredLeads = leads.filter((lead) => {
+  const filteredLeads = originalLeads.filter((lead) => {
     let matchesAgent = true;
     let matchesDays = true;
+    let matchesDate = true;
 
     // Filter by Agent
     if (filterAgent) {
       matchesAgent = lead.agent?._id === filterAgent;
     }
 
-    // Filter by days
+    // Filter by Days
     if (filterDays) {
       const leadDate = new Date(lead.createdAt);
       const today = new Date();
-      const difference = (today - leadDate) / (1000 * 60 * 60 * 24); // difference in days
-      matchesDays = difference <= Number(filterDays);
+      const diffDays = (today - leadDate) / (1000 * 60 * 60 * 24);
+      matchesDays = diffDays <= Number(filterDays);
     }
 
-    return matchesAgent && matchesDays;
-  });
+    // Exact Date Filter
+    if (filterDate) {
+      const selected = new Date(filterDate);
+      const ld = new Date(lead.createdAt);
 
-  // ------------------------------------------
-  // UI
-  // ------------------------------------------
+      matchesDate =
+        ld.getFullYear() === selected.getFullYear() &&
+        ld.getMonth() === selected.getMonth() &&
+        ld.getDate() === selected.getDate();
+    }
+
+    return matchesAgent && matchesDays && matchesDate;
+  });
 
   if (loading) {
     return <p className="text-center mt-10 text-[#8A4B00]">Loading leads...</p>;
@@ -145,33 +146,36 @@ export default function Leads() {
 
   return (
     <div className="p-4 sm:p-6 md:p-8 text-[#8A4B00] space-y-4">
-      <h1 className="text-3xl font-bold mb-6">All Leads</h1>
+      <h1 className="text-3xl font-bold text-center text-[#D97706] mb-6">
+        All Leads
+      </h1>
 
+      {/* FILTER BAR */}
       <div
-                  className="
-                  flex flex-col md:flex-row 
-                  items-start md:items-center 
-                  gap-3 md:gap-4 
-                  mb-6 
-                  bg-[#FFF9EF] 
-                  p-4 
-                  rounded-xl 
-                  border border-[#F4A300]/40 
-                  shadow-sm
-                "
+        className="
+          flex flex-col md:flex-row 
+          items-start md:items-center 
+          gap-3 md:gap-4 
+          bg-[#FFF9EF] 
+          p-4 
+          rounded-xl 
+          border border-[#F4A300]/40
+          shadow-sm
+          relative
+        "
       >
         {/* Agent Search Box */}
+        <div className="relative w-full md:w-64">
           <input
             type="text"
             value={agentSearch}
             onChange={(e) => setAgentSearch(e.target.value)}
             placeholder="Search Agent..."
-            className="h-10 p-2 border rounded w-full md:w-64"
+            className="h-10 p-2 border rounded w-full"
           />
 
-          {/* Dropdown */}
           {filteredAgents.length > 0 && (
-            <div className="absolute top-full left-0 w-full bg-white border rounded shadow max-h-60 overflow-y-auto z-10">
+            <div className="absolute top-full mt-1 w-full bg-white border rounded shadow max-h-60 overflow-y-auto z-20">
               {filteredAgents.map((agent) => (
                 <div
                   key={agent._id}
@@ -187,7 +191,7 @@ export default function Leads() {
               ))}
             </div>
           )}
-        
+        </div>
 
         {/* Days Filter */}
         <select
@@ -202,31 +206,40 @@ export default function Leads() {
           <option value="90">Last 90 Days</option>
         </select>
 
-        {/* Clear Filters Button */}
+        {/* Exact Date Filter */}
+        <input
+          type="date"
+          value={filterDate}
+          onChange={(e) => setFilterDate(e.target.value)}
+          className="h-10 p-2 border rounded w-full md:w-48"
+        />
+
+        {/* Clear Filters */}
         <button
           onClick={() => {
             setFilterAgent("");
             setFilterDays("");
+            setFilterDate("");
             setAgentSearch("");
             setFilteredAgents([]);
           }}
           className="h-10 px-4 bg-yellow-500 text-white rounded hover:bg-yellow-600"
         >
-          Clear Filters
+          Clear
         </button>
 
         {/* Print Button */}
         <button
           onClick={handlePrint}
           className="h-10 flex items-center gap-2 px-4 bg-red-600 
-                     text-white rounded-lg hover:bg-red-700 transition"
+            text-white rounded-lg hover:bg-red-700 transition"
         >
           <FiDownload className="text-lg" />
-          <span>Print Leads</span>
+          <span>Print</span>
         </button>
       </div>
 
-      {/* Table */}
+      {/* TABLE */}
       <div
         id="leads-table"
         className="overflow-x-auto shadow-lg rounded-lg border border-[#F4A300] bg-white"
