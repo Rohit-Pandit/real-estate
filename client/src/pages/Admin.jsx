@@ -48,7 +48,7 @@ export default function Admin() {
     try {
         if (otp === pin) {
 
-          toast.success("OTP verified successfully");
+          toast.success("PIN verified successfully");
           navigate("/dashboard");
           setOtpError(false);
           inputRefs.current.forEach((input) => (input.value = ""));
