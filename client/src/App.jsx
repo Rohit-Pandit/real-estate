@@ -8,6 +8,7 @@ import Contact from './pages/Contact.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import Lead from './pages/Leads.jsx';
 import Agents from './pages/Agents.jsx';
+import { ToastContainer } from 'react-toastify';
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
         
       </Routes>
       <Footer />
+      <ToastContainer />
     </BrowserRouter>
   )
 }
