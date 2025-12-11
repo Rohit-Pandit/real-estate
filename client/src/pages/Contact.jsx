@@ -31,7 +31,7 @@ const Contact = () => {
       );
 
       setFormData(initialFormState);
-      toast.success("Lead submitted successfully!");
+      toast.success("Lead created successfully!");
     } catch (error) {
       toast.error(error.response?.data || error.message);
     }

@@ -21,6 +21,7 @@ export default function Agents() {
     try {
       const res = await axios.get(`${backendUrl}/api/v1/agents/get-all-agents`);
       setAgents(res.data.agents || []);
+      
     } catch (err) {
       toast.error("Failed to load agents");
     }
@@ -35,6 +36,7 @@ export default function Agents() {
   // ------------------------------------
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    toast.info("updated");
   };
 
   // ------------------------------------

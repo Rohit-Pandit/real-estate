@@ -27,6 +27,7 @@ export default function Dashboard() {
               setDashboardView(true);
               setLeadsView(false);
               setAgentsView(false);
+              setTokenView(false);
             }}>
               <FiFileText /> Dashboard View
             </button>
@@ -37,6 +38,7 @@ export default function Dashboard() {
               setDashboardView(false);
               setLeadsView(true);
               setAgentsView(false);
+              setTokenView(false);
             }}>
               <FiFileText /> Leads
             </button>
@@ -47,6 +49,7 @@ export default function Dashboard() {
               setDashboardView(false);
               setLeadsView(false);
               setAgentsView(true);
+              setTokenView(false);
             }}>
               <FiUsers /> Agents
             </button>
@@ -57,7 +60,7 @@ export default function Dashboard() {
               setDashboardView(false);
               setLeadsView(false);
               setAgentsView(false);
-              tokenView(true);
+              setTokenView(true);
               }}>
               <FiDownload /> Print Token
             </button>
@@ -73,10 +76,10 @@ export default function Dashboard() {
       {/* MAIN CONTENT */}
       <div className="flex-1 p-8">
 
-        {dashboardView && !leadsView && !agentsView && <DashboardView />}
-        {!dashboardView && leadsView && !agentsView && <Lead />}
-        {!dashboardView && !leadsView && agentsView && <Agents/>}
-        {!dashboardView && !leadsView && !agentsView && <Token/>}
+        {dashboardView && !leadsView && !agentsView && !tokenView && <DashboardView />}
+        {!dashboardView && leadsView && !agentsView && !tokenView && <Lead />}
+        {!dashboardView && !leadsView && agentsView && !tokenView && <Agents/>}
+        {!dashboardView && !leadsView && !agentsView && tokenView && <Token/>}
 
       </div>
     </div>
