@@ -36,7 +36,7 @@ export default function Agents() {
   // ------------------------------------
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    toast.info("updated");
+    
   };
 
   // ------------------------------------
