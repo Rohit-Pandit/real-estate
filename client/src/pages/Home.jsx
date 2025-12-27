@@ -23,22 +23,24 @@ export default function Home() {
             across the city.
           </p>
 
-          <Link to="/contact">
-            <button className="mt-6 bg-[#F4A300] text-white px-8 py-3 rounded-full font-semibold shadow-md hover:bg-[#d98c00] transition">
-              Explore Properties
-            </button>
-          </Link>
+          <div className="mt-6 flex flex-col sm:flex-row gap-4">
+            {/* Explore Properties */}
+            <Link to="/contact">
+              <button className="bg-[#F4A300] text-white px-8 py-3 rounded-full font-semibold shadow-md hover:bg-[#d98c00] transition w-full sm:w-auto">
+                Explore Properties
+              </button>
+            </Link>
 
-          <a
-            href="/brochure.pdf"
-            download
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <button className="mt-6 bg-[#F4A300] text-white px-8 py-3 rounded-full font-semibold shadow-md hover:bg-[#d98c00] transition">
+            {/* Brochure Button */}
+            <a
+              href="/brochure.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center bg-[#8A4B00] text-white px-8 py-3 rounded-full font-semibold shadow-md hover:bg-[#6f3d00] transition w-full sm:w-auto"
+            >
               Brochure ↓
-            </button>
-          </a>
+            </a>
+          </div>
         </div>
       </section>
       <section>
