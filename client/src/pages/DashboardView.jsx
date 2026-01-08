@@ -30,37 +30,18 @@ export default function DashboardView() {
       const agentsData = agentsRes.data.agents;
       setTotalAgents(agentsData.length || 0);
 
-      const formatToKey = (date) => {
-        const d = new Date(date);
-        if (isNaN(d)) return null;
-
-        return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(
-          2,
-          "0"
-        )}-${String(d.getDate()).padStart(2, "0")}`;
-      };
-
-      const todayKey = formatToKey(new Date());
-
-      const todayLeadsCount = leads.filter((lead) => {
-        if (!lead?.createdAt) return false;
-
-        const leadKey = formatToKey(lead.createdAt);
-        return leadKey === todayKey;
+      const today = new Date();
+      const leadsTodayCount = leadsData.filter((lead) => {
+        const leadDate = new Date(lead.createdAt);  
+        return (
+          leadDate.getDate() === today.getDate() &&
+          leadDate.getMonth() === today.getMonth() &&
+          leadDate.getFullYear() === today.getFullYear()
+        );
       }).length;
+      setLeadsToday(leadsTodayCount);
 
-      console.log("Leads Today:", todayLeadsCount);
-      console.log(
-        "createdAt Raw:",
-        leads[0]?.createdAt,
-        typeof leads[0]?.createdAt
-      );
-
-      setLeadsToday(todayLeadsCount);
-      console.log(leadsToday);
-      console.log("createdAt Raw:", leads[0]?.createdAt, typeof leads[0]?.createdAt);
-
-      console.log("Dashboard data fetched successfully");
+      toast.success("Dashboard data fetched successfully");
     } catch (error) {
       toast.error("Failed to fetch dashboard data");
     }
