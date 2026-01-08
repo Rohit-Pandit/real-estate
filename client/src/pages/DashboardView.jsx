@@ -30,7 +30,7 @@ export default function DashboardView() {
       const agentsData = agentsRes.data.agents;
       setTotalAgents(agentsData.length || 0);
 
-      const todayLeadsCount = leads.filter((lead) => {
+      const todayLeadsCount = totalAgents.filter((lead) => {
         if (!lead?.createdAt) return false; // 🔒 prevents crash
 
         const leadDate = new Date(lead.createdAt);
@@ -43,7 +43,11 @@ export default function DashboardView() {
         return leadDay === today;
       }).length;
 
+      console.log("Leads Today:", todayLeadsCount);
+
       setLeadsToday(todayLeadsCount);
+      console.log(leadsToday);
+      console.log("Dashboard data fetched successfully");
     } catch (error) {
       toast.error("Failed to fetch dashboard data");
     }
