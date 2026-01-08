@@ -39,6 +39,8 @@ export default function DashboardView() {
           leadDate.getFullYear() === today.getFullYear()
         );
       }).length;
+
+      console.log("Leads Today Count:", leadsTodayCount);
       setLeadsToday(leadsTodayCount);
 
       toast.success("Dashboard data fetched successfully");
